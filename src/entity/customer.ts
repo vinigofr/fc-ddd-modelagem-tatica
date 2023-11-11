@@ -7,13 +7,16 @@ export default class Customer {
   // É interessante diferenciar entidades de negócio com entidades de ORM
   // Infra = comunicação externa
 
-  _id: string;
-  _name: string;
-  _address!: Address;
+  private _id: string;
+  private _name: string;
+  private _address!: Address;
+  private _active: boolean = false;
 
   constructor(id: string, name: string) {
     this._id = id;
     this._name = name;
+
+    this.validate()
   }
 
   // Endereço pode vir em branco e pode ser setado após customer criado (se preferido)
@@ -21,7 +24,40 @@ export default class Customer {
     this._address = address;
   }
 
-  activate() {
-    console.log('customer activated/deactivated');
+  get name(): string {
+    return this._name
+  }
+
+  activate(): void {
+    if (!(this._address instanceof Address)) {
+      throw new Error("address is mandatory to activate a customer")
+    }
+    this._active = true
+  }
+
+  deactivate(): void {
+    this._active = false
+  }
+
+  isActive(): boolean {
+    return this._active;
+  }
+
+  changeName(name: string) {
+    if (name === "") {
+      throw new Error("Name is required");
+    }
+
+    this._name = name;
+  }
+
+  validate() {
+    if (this._id === "") {
+      throw new Error("Id is required");
+    }
+
+    if (this._name === "") {
+      throw new Error("Name is required");
+    }
   }
 }
