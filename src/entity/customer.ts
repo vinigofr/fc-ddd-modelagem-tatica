@@ -44,11 +44,8 @@ export default class Customer {
   }
 
   changeName(name: string) {
-    if (name === "") {
-      throw new Error("Name is required");
-    }
-
     this._name = name;
+    this.validate();
   }
 
   validate() {

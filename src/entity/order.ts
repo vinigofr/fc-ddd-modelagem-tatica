@@ -37,7 +37,7 @@ export default class Order {
   total(): number {
     let total: number = 0;
     this._items.forEach(item => {
-      total += item.price;
+      total += item.total;
     })
 
     return total
