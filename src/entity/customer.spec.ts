@@ -1,5 +1,6 @@
 import Address from "./address"
 import Customer from "./customer"
+import { v4 as uuid } from "uuid"
 
 describe("customer unit tests", () => {
   test("throw error when id is empty", () => {
@@ -49,5 +50,16 @@ describe("customer unit tests", () => {
 
     expect(activateSpy).toHaveBeenCalled()
     expect(deactivateSpy).toHaveBeenCalled()
+  })
+
+  test("should add reward points", () => {
+    const customer = new Customer(uuid(), "John")
+    expect(customer.rewardPoints).toBe(0)
+
+    customer.addRewardPoints(10)
+    expect(customer.rewardPoints).toBe(10)
+
+    customer.addRewardPoints(20)
+    expect(customer.rewardPoints).toBe(30)
   })
 })
