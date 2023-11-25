@@ -21,6 +21,22 @@ export default class Address {
     this.validate();
   }
 
+  get number(): string {
+    return this._number
+  }
+
+  get street(): string {
+    return this._street
+  }
+
+  get zip(): string {
+    return this._zip
+  }
+
+  get city(): string {
+    return this._city
+  }
+
   validate() {
     console.log("Some validations here");
   }
