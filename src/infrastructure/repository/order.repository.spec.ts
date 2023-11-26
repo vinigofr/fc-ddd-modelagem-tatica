@@ -124,4 +124,66 @@ describe("Order repository tests", () => {
     const orderRepository = new OrderRepository();
     expect(async () => orderRepository.find("ABC123")).rejects.toThrow(new Error("Order not found"))
   })
+
+  test("should return all orders", async () => {
+    // Customer
+    const customer = new Customer("123", "Customer 1")
+    const address = new Address("Street 1", "1", "Zipcode 1", "City 1")
+    customer.changeAddress(address)
+    const customerRepository = new CustomerRepository();
+    await customerRepository.create(customer)
+
+    // Product
+    const product = new Product("1", "Maçã", 5);
+    const productRepository = new ProductRepository();
+    await productRepository.create(product)
+
+    // Orders
+    const orders = [
+      new Order("1", customer.id, [new OrderItem("1", product.name, product.price, product.id, 2)]),
+      new Order("2", customer.id, [new OrderItem("2", product.name, product.price, product.id, 2)]),
+    ]
+
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(orders[0])
+    await orderRepository.create(orders[1])
+
+    // Getting all orders via Model and Repository and comparing them
+    const orderModels = await OrderModel.findAll({ include: ['items'] })
+    const retrievedOrders = await orderRepository.findAll();
+
+    expect(orderModels.length).toBe(2);
+    expect(retrievedOrders.length).toBe(2);
+
+    expect(orderModels[0]?.toJSON()).toStrictEqual({
+      id: retrievedOrders[0].id,
+      customer_id: retrievedOrders[0].customerId,
+      total: retrievedOrders[0].total(),
+      items: [
+        {
+          id: retrievedOrders[0].items[0].id,
+          name: retrievedOrders[0].items[0].name,
+          quantity: retrievedOrders[0].items[0].quantity,
+          price: retrievedOrders[0].items[0].price,
+          order_id: retrievedOrders[0].id,
+          product_id: retrievedOrders[0].items[0].productId
+        }
+      ]
+    })
+    expect(orderModels[1]?.toJSON()).toStrictEqual({
+      id: retrievedOrders[1].id,
+      customer_id: retrievedOrders[1].customerId,
+      total: retrievedOrders[1].total(),
+      items: [
+        {
+          id: retrievedOrders[1].items[0].id,
+          name: retrievedOrders[1].items[0].name,
+          quantity: retrievedOrders[1].items[0].quantity,
+          price: retrievedOrders[1].items[0].price,
+          order_id: retrievedOrders[1].id,
+          product_id: retrievedOrders[1].items[0].productId
+        }
+      ]
+    })
+  })
 })
