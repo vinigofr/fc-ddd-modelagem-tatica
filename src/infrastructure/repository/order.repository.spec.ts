@@ -72,4 +72,56 @@ describe("Order repository tests", () => {
       ]
     })
   })
+
+  test("should retrieve an order by id", async () => {
+    // Customer
+    const customer = new Customer("123", "Customer 1")
+    const address = new Address("Street 1", "1", "Zipcode 1", "City 1")
+    customer.changeAddress(address)
+    const customerRepository = new CustomerRepository();
+    await customerRepository.create(customer)
+
+    // Product
+    const product = new Product("1", "Maçã", 5);
+    const productRepository = new ProductRepository();
+    await productRepository.create(product)
+
+    // Order
+    const orderItem = new OrderItem("1", product.name, product.price, product.id, 2);
+    const order = new Order("1", customer.id, [orderItem])
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order)
+
+    // Getting an order via Model and Repository and comparing them
+    const orderModel = await OrderModel.findOne({
+      where: { id: order.id },
+      include: [
+        "items",
+      ],
+    })
+
+    const retrievedOrder = await orderRepository.find(order.id);
+    const { items } = retrievedOrder;
+
+    expect(orderModel?.toJSON()).toStrictEqual({
+      id: retrievedOrder.id,
+      customer_id: retrievedOrder.customerId,
+      total: retrievedOrder.total(),
+      items: [
+        {
+          id: items[0].id,
+          name: items[0].name,
+          quantity: items[0].quantity,
+          price: items[0].price,
+          order_id: retrievedOrder.id,
+          product_id: items[0].productId
+        }
+      ]
+    })
+  })
+
+  test("should throw an error when order cannnot be found", async () => {
+    const orderRepository = new OrderRepository();
+    expect(async () => orderRepository.find("ABC123")).rejects.toThrow(new Error("Order not found"))
+  })
 })
