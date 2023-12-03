@@ -186,4 +186,43 @@ describe("Order repository tests", () => {
       ]
     })
   })
+
+  test("should update customer_id from an order", async () => {
+    // Customer
+    const customer = new Customer("123", "Customer 1");
+    const customer2 = new Customer("456", "Customer 2");
+    const address = new Address("Street 1", "1", "Zipcode 1", "City 1");
+    const address2 = new Address("Street 2", "2", "Zipcode 2", "City 2")
+    customer.changeAddress(address);
+    customer2.changeAddress(address2)
+    const customerRepository = new CustomerRepository();
+    await customerRepository.create(customer);
+    await customerRepository.create(customer2)
+
+    // Product
+    const product = new Product("1", "Maçã", 5);
+    const productRepository = new ProductRepository();
+    await productRepository.create(product)
+
+    // Order
+    const orderItem = new OrderItem("1", product.name, product.price, product.id, 2);
+    const order = new Order("1", customer.id, [orderItem])
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order)
+
+    let orderModel = await OrderModel.findOne({ where: { customer_id: customer.id }, include: ["items"] });
+    expect(orderModel?.toJSON().customer_id).toBe("123");
+
+    order.changeCustomer(customer2.id)
+    await orderRepository.update(order)
+
+    orderModel = await OrderModel.findOne({ where: { customer_id: customer2.id }, include: ["items"] });
+    expect(orderModel?.toJSON().customer_id).toBe("456")
+  })
+
+  test("should throw an error when order cannnot be updated", async () => {
+    const order = new Order("1", "1", [new OrderItem("1", "name", 10, "1", 1)])
+    const orderRepository = new OrderRepository();
+    expect(async () => orderRepository.update(order)).rejects.toThrow(new Error("Order not found"))
+  })
 })
