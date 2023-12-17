@@ -1,0 +1,25 @@
+1. Todo evento deve ser baseado em uma coisa que aconteceu no passado
+  - O usuário foi criado
+  - O evento foi userCreated
+  - O método foi createUser
+  - Sacou? ;)
+
+
+2. Quando deve ser utilizado?
+  - Deve ser utilizado quando devemos notificar outros bounded context sobre mudança de estado
+  - Apenas os bounded contexts devem ser informados pois não faz sentido o próprio sistema se notificar
+
+
+3. Componentes (inclusive estes que são utilizados neste projeto)
+  - Event: dados do evento, como o que acontece, data e hora
+  - Handler: É o que executa o processamento quando um evento é chamado (UserHandler -> UserNotification)
+  - Event Dispatcher: Responsável por armazenar e executar os handlers de um evento quando ele for disparado
+
+4. Dinâmica
+  - Criar "Event Dispatcher"
+  - Criar um "Evento"
+  - Criar um "Handler" para o "Evento"
+  - Registramos o "Evento", juntamente com o "Handler" no "Event Dispatcher"
+  - Resumo:
+    - Agora, para disparar o evento basta chamar o método notify do "Event Dispatcher"
+    - Nesse momento todos os Handlers registrados no evento serão executados
