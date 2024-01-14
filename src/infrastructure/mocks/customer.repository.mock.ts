@@ -16,13 +16,11 @@ export default
 
   async find(id: string): Promise<Customer> {
     console.log('customer found')
-
-    return new Promise((resolve) => resolve(new Customer('', '')))
+    return new Promise((resolve) => resolve(new Customer('1', 'Vinicius')))
   }
 
   async findAll(): Promise<Customer[]> {
     console.log('all customers retrivied')
-
-    return new Promise((resolve) => resolve([new Customer('', '')]))
+    return new Promise((resolve) => resolve([new Customer('1', 'Vinicius')]))
   }
 }
