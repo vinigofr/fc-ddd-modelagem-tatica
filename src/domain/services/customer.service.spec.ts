@@ -5,6 +5,7 @@ import Customer from '../entity/customer';
 import CustomerService from './customer.service';
 import Address from '../entity/address';
 import CustomerRepositoryMock from '../../infrastructure/mocks/customer.repository.mock';
+import SendConsoleLogHandler from '../event/customer/handler/enviaConsoleLog.handler';
 
 describe('Customer Service unit tests', () => {
   test('should send notification about customer creation', async () => {
@@ -38,5 +39,28 @@ describe('Customer Service unit tests', () => {
     expect(spyHandle2).toHaveBeenCalled()
   })
 
-  // test('Should send notification about update customer address', () => { })
+  test('Should send notification about update customer address', async () => {
+    // instanciamos o dispatcher
+    const eventDispatcher = new EventDispatcher();
+
+    // instanciamos os handlers
+    const sendConsoleLogHandler = new SendConsoleLogHandler();
+    const spyHandle = jest.spyOn(sendConsoleLogHandler, 'handler')
+
+    // Registramos eles no evento em questão
+    eventDispatcher.register('CustomerAddressChangedEvent', sendConsoleLogHandler)
+
+    // Instanciamos o repositório
+    const customerRepository = new CustomerRepositoryMock()
+
+    // Change a customer address
+    const customerService = new CustomerService({
+      dispatcher: eventDispatcher,
+      repository: customerRepository,
+    });
+
+    await customerService.changeAddress('1', new Address('street', 'number', 'zip', 'city'))
+
+    expect(spyHandle).toHaveBeenCalled()
+  })
 })
