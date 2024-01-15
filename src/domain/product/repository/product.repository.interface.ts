@@ -1,5 +1,5 @@
 import Product from "../entity/product";
-import RepositoryInterface from "./repository.interface";
+import RepositoryInterface from "../../@shared/repository/repository.interface";
 
 /* Um pouco de typescript aqui, como herança de interfaces.
  * No arquivo ./repository.interface.ts temos o "BÁSICO"

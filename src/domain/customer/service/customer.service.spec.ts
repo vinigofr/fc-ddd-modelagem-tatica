@@ -1,11 +1,11 @@
-import SendConsoleLog1Handler from '../event/customer/handler/enviaConsoleLog1.handler';
-import SendConsoleLog2Handler from '../event/customer/handler/enviaConsoleLog2.handler';
-import EventDispatcher from '../event/@shared/event.dispatcher';
+import SendConsoleLog1Handler from '../event/handler/enviaConsoleLog1.handler';
+import SendConsoleLog2Handler from '../event/handler/enviaConsoleLog2.handler';
+import EventDispatcher from '../../@shared/event/event.dispatcher';
 import Customer from '../entity/customer';
 import CustomerService from './customer.service';
-import Address from '../entity/address';
-import CustomerRepositoryMock from '../../infrastructure/mocks/customer.repository.mock';
-import SendConsoleLogHandler from '../event/customer/handler/enviaConsoleLog.handler';
+import Address from '../value-object/address';
+import CustomerRepositoryMock from '../../../infrastructure/mocks/customer.repository.mock';
+import SendConsoleLogHandler from '../event/handler/enviaConsoleLog.handler';
 
 describe('Customer Service unit tests', () => {
   test('should send notification about customer creation', async () => {

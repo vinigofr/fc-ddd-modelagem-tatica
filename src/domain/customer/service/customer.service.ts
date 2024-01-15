@@ -1,9 +1,9 @@
-import CustomerRepository from "../../infrastructure/repository/customer.repository";
-import Address from "../entity/address";
+import CustomerRepository from "../../../infrastructure/repository/customer.repository";
+import Address from "../value-object/address";
 import Customer from "../entity/customer";
-import EventDispatcher from "../event/@shared/event.dispatcher";
-import CustomerAddressChangedEvent from "../event/customer/customerAddressChanged.event";
-import CustomerCreatedEvent from "../event/customer/customerCreated.event";
+import EventDispatcher from "../../@shared/event/event.dispatcher";
+import CustomerAddressChangedEvent from "../event/customerAddressChanged.event";
+import CustomerCreatedEvent from "../event/customerCreated.event";
 
 export default class CustomerService {
   repository;
