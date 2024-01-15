@@ -4,7 +4,7 @@ import EventDispatcher from '../../@shared/event/event.dispatcher';
 import Customer from '../entity/customer';
 import CustomerService from './customer.service';
 import Address from '../value-object/address';
-import CustomerRepositoryMock from '../../../infrastructure/mocks/customer.repository.mock';
+import CustomerRepositoryMock from '../../../infrastructure/customer/mocks/customer.repository.mock';
 import SendConsoleLogHandler from '../event/handler/enviaConsoleLog.handler';
 
 describe('Customer Service unit tests', () => {
