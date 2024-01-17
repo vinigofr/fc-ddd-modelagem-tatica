@@ -1,13 +1,13 @@
 import ProductInterface from "./product.interface";
 
-export default class Product implements ProductInterface {
+export default class ProductOverpriced implements ProductInterface {
   _id: string;
   _name: string;
   _price: number;
   constructor(id: string, name: string, price: number) {
     this._id = id;
     this._name = name;
-    this._price = price;
+    this._price = price * 5;
 
     this.validate();
   }

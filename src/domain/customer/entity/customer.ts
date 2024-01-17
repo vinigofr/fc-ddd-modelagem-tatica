@@ -1,6 +1,7 @@
 import Address from "../value-object/address";
+import CustomerInterface from "./customer.interface";
 
-export default class Customer {
+export default class Customer implements CustomerInterface {
   // Toda entidade tem um ID
   // Não é possível distinguir um objeto de outro se eles tem ID's iguais
   // Uma entidade por padrão precisará se auto-validar
