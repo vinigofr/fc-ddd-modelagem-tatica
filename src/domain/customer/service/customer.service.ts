@@ -5,6 +5,16 @@ import EventDispatcher from "../../@shared/event/event.dispatcher";
 import CustomerAddressChangedEvent from "../event/customerAddressChanged.event";
 import CustomerCreatedEvent from "../event/customerCreated.event";
 
+
+/**
+ * Comentátio por Lucian Silva, Full Cycle
+ * Obs.: É sempre interessante criarmos e colocarmos os testes na pasta onde
+ * os arquivos testados estão. Mesmo ficando descentralizado, esta forma facilita
+ * a ler o teste e o que está sendo testado.
+ * 
+ * TODO: Interessante analisar uma forma de implementar testes na camada correta
+ */
+
 export default class CustomerService {
   repository;
   dispatcher;
